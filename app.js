@@ -10,7 +10,7 @@ const app = express();
 
 app.use(bodyParser.json());
 
-// app.use(cors({ origin: true }));
+app.use(cors({ origin: true }));
 
 app.use('/api/user', userRoutes);
 app.use('/api/doctor', doctorRoutes);
