@@ -4,7 +4,7 @@ const Specialty = require('../models/specialty');
 const getSpecialties = async (req, res, next) => {
     let specialties;
     try {
-        specialties = await Specialty.find({}, '-password');
+        specialties = await Specialty.find({});
     } catch (err) {
       const error = new HttpError(
         'Fetching users failed, please try again later.',
@@ -13,6 +13,6 @@ const getSpecialties = async (req, res, next) => {
       return next(error);
     }
     res.json({ specialties: specialties.map(specialty => specialty.toObject({ getters: true })) });
-  };
+};
 
-  exports.getSpecialties = getSpecialties;
+exports.getSpecialties = getSpecialties;

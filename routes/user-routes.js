@@ -4,7 +4,7 @@ const { check } = require('express-validator');
 
 const router = express.Router();
 
-router.post('/user/register',
+router.post('/register',
     // [
     //     check('name')
     //     .not()
@@ -23,8 +23,15 @@ router.post('/user/register',
     userControllers.registerUser
 );
 
-// router.post('/user/login', userControllers.loginUser);
+// router.post('/login', userControllers.loginUser);
 
-// router.post('/user/recover-password', userControllers.recoverPasswordUser);
+// router.post('/recover-password',
+    // [
+    //     check('email')
+    //     .normalizeEmail()
+    //     .isEmail(),
+    //     check('password').isLength({ min: 6 }),
+    // ],
+// userControllers.recoverPasswordUser);
 
 module.exports = router;

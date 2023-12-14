@@ -1,11 +1,6 @@
 const mongoose = require('mongoose')
 
 const Doctor = mongoose.model('Doctor', {
-    specialty: {
-        type: String,
-        required: true,
-        trim: true
-    },
     name: {
         type: String,
         required: true,
@@ -16,6 +11,11 @@ const Doctor = mongoose.model('Doctor', {
         required: true,
         trim: true
     },
+    specialty: {
+        type: String,
+        required: true,
+        trim: true
+    }
 })
 
 module.exports = Doctor;

@@ -1,8 +1,8 @@
 const express = require('express');
 require('./db/mongoose');
 const bodyParser = require('body-parser');
-const userRoutes = require('./routes/user-routes');
-// const doctorRoutes = require('./routes/doctor-routes');
+// const userRoutes = require('./routes/user-routes');
+const doctorRoutes = require('./routes/doctor-routes');
 // const specialtyRoutes = require('./routes/specialty-routes');
 // const shiftRoutes = require('./routes/shift-routes');
 const HttpError = require('./models/http-error');
@@ -14,8 +14,8 @@ app.use(bodyParser.json());
 
 // app.use(cors({ origin: true }));
 
-app.use('/api/user', userRoutes);
-// app.use('/api/doctor', doctorRoutes);
+// app.use('/api/user', userRoutes);
+app.use('/api/doctor', doctorRoutes);
 // app.use('/api/specialty', specialtyRoutes);
 // app.use('/api/shift', shiftRoutes);
 

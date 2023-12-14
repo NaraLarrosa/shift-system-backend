@@ -1,29 +1,42 @@
 const express = require('express');
 const doctorControllers = require('../controllers/doctor-controllers');
 const { check } = require('express-validator');
+const auth = require('../middleware/auth');
 
 const router = express.Router();
 
-router.get('/doctors', doctorControllers.getAllDoctors);
+router.get('/', doctorControllers.getAllDoctors);
 
-router.get('/doctor/:did', 
+router.get('/:did', doctorControllers.getDoctorById);
+
+router.post('/add', 
     [
-        check('')
+        check('specialty')
+        .not()
+        .isEmpty(),
+        check('name')
+        .not()
+        .isEmpty(),
+        check('surname')
+        .not()
+        .isEmpty()
     ],
-doctorControllers.getDoctorById);
+doctorControllers.addDoctor);
 
-router.post('/doctor', 
+router.use(auth);
+
+router.patch('/update/:did', 
     [
-        check('')
+        check('name')
+        .not()
+        .isEmpty(),
+        check('surname')
+        .not()
+        .isEmpty(),
+        check('specialty')
+        .not()
+        .isEmpty()
     ],
-doctorControllers.createDoctor);
-
-router.use(checkAuth);
-
-router.patch('/doctor/:did', 
-    [
-        check('')
-    ],
-doctorControllers.updateDoctorById);
+doctorControllers.updateDoctor);
 
 module.exports = router;
