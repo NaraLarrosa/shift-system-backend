@@ -9,7 +9,7 @@ router.get('/', doctorControllers.getAllDoctors);
 
 router.get('/:did', doctorControllers.getDoctorById);
 
-router.use(auth);
+//router.use(auth);
 
 router.post('/add', 
     [
@@ -26,17 +26,17 @@ router.post('/add',
 doctorControllers.addDoctor);
 
 router.patch('/update/:did', 
-    [
-        check('name')
-        .not()
-        .isEmpty(),
-        check('surname')
-        .not()
-        .isEmpty(),
-        check('specialty')
-        .not()
-        .isEmpty()
-    ],
+    // [
+    //     check('name')
+    //     .not()
+    //     .isEmpty(),
+    //     check('surname')
+    //     .not()
+    //     .isEmpty(),
+    //     check('specialty')
+    //     .not()
+    //     .isEmpty()
+    // ],
 doctorControllers.updateDoctor);
 
 module.exports = router;

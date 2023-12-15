@@ -57,7 +57,7 @@ const addDoctor = async (req, res, next) => {
     const addDoctor = new Doctor({
         name,
         surname,
-        specialty
+        specialty,
     });
     
     try {
@@ -76,47 +76,43 @@ const addDoctor = async (req, res, next) => {
 };
 
 const updateDoctor = async (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return next(
-        new HttpError('Invalid inputs passed, please check your data.', 422)
-      );
-    }
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(
+      new HttpError('Invalid inputs, please check your data.',
+      422)
+    );
+  };
+
+  const { name, surname, specialty } = req.body;
+  const doctorId = req.params.did;
+
+  let doctor;
+  try {
+    doctor = await Doctor.findById(doctorId);
+  } catch (err) {
+    const error = new HttpError(
+      'Something went wrong, could not update the doctor.',
+      500
+    );
+    return next(error);
+  };
+
+  doctor.name = name;
+  doctor.surname = surname;
+  doctor.specialty = specialty;
+
+  try {
+    await doctor.save();
+  } catch (err) {
+    const error = new HttpError(
+      'An error occurred, the doctor could not be updated.',
+      500
+    );
+    return next(error);
+  };
   
-    const { name, surname, specialty } = req.body;
-    const doctorId = req.params.did;
-  
-    let doctor;
-    try {
-        doctor = await Doctor.findById(doctorId);
-    } catch (err) {
-      const error = new HttpError(
-        'Something went wrong, could not update doctor.',
-        500
-      );
-      return next(error);
-    }
-  
-    if (doctor.creator.toString() !== req.userData.userId) {
-      const error = new HttpError('You are not allowed to edit the doctor.', 401);
-      return next(error);
-    }
-  
-    doctor.name = name;
-    doctor.surname = surname;
-    doctor.specialty = specialty;
-  
-    try {
-      await doctor.save();
-    } catch (err) {
-      const error = new HttpError(
-        'Something went wrong, could not update the doctor.',
-        500
-      );
-      return next(error);
-    }
-  
-    res.status(200).json({ doctor: doctor.toObject({ getters: true }) });
+  res.status(200).json({ doctor: doctor.toObject({ getters: true }) });
 };
 
 exports.getAllDoctors = getAllDoctors;

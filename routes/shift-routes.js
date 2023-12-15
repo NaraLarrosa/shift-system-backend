@@ -4,20 +4,40 @@ const { check } = require('express-validator');
 
 const router = express.Router();
 
-router.post('/create', shiftControllers.createAvailableShift);
+router.post('/create',
+    [
+        check('day')
+        .not()
+        .isEmpty(),
+        check('hour')
+        .not()
+        .isEmpty(),
+        check('description').isLength({ min: 5 })
+    ],
+shiftControllers.createAvailableShift);
 
-router.patch('/update', userControllers.updateAvailableShift);
+router.patch('/update',
+    [
+        check('day')
+        .not()
+        .isEmpty(),
+        check('hour')
+        .not()
+        .isEmpty(),
+        check('description').isLength({ min: 5 })
+    ],
+shiftControllers.updateAvailableShift);
 
-router.delete('/delete', userControllers.deleteAvailableShift);
+router.delete('/delete', shiftControllers.deleteAvailableShift);
 
-router.get('/doc/:did', userControllers.shiftByDoctor);
+router.get('/doc/:did', shiftControllers.shiftByDoctor);
 
-router.get('/:pid', userControllers.shiftByPatient);
+router.get('/:pid', shiftControllers.shiftByPatient);
 
-router.put('/reservation', userControllers.shiftReservation);
+router.put('/reservation', shiftControllers.shiftReservation);
 
-router.put('/cancel', userControllers.shiftCancel);
+router.put('/cancel', shiftControllers.shiftCancel);
 
-router.get('/cancel/:pid', userControllers.cancellatioByPatient );
+router.get('/cancel/:pid', shiftControllers.cancellatioByPatient );
 
 module.exports = router;

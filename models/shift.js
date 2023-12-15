@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const shiftSchema = new mongoose.Schema({
-    date: {
+    day: {
         type: String,
         required: true,
         trim: true
@@ -14,13 +14,15 @@ const shiftSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    description: {
+        type: String,
+        required: true,
+        minlength: 5 
+    },
     available: {
         type: Boolean,
         required: true,
-        trim: true
     }
 });
 
-const Shift = mongoose.model('Shift', shiftSchema);
-
-module.exports = User;
+module.exports = shiftSchema;
