@@ -3,8 +3,8 @@ require('./db/mongoose');
 const bodyParser = require('body-parser');
 // const userRoutes = require('./routes/user-routes');
 const doctorRoutes = require('./routes/doctor-routes');
-// const specialtyRoutes = require('./routes/specialty-routes');
-// const shiftRoutes = require('./routes/shift-routes');
+const specialtyRoutes = require('./routes/specialty-routes');
+const shiftRoutes = require('./routes/shift-routes');
 const HttpError = require('./models/http-error');
 
 const port = process.env.PORT || 3000;
@@ -16,8 +16,8 @@ app.use(bodyParser.json());
 
 // app.use('/api/user', userRoutes);
 app.use('/api/doctor', doctorRoutes);
-// app.use('/api/specialty', specialtyRoutes);
-// app.use('/api/shift', shiftRoutes);
+app.use('/api/specialty', specialtyRoutes);
+app.use('/api/shift', shiftRoutes);
 
 app.use((req, res, next) => {
   const error = new HttpError('Could not find the given path.', 404);

@@ -9,6 +9,8 @@ router.get('/', doctorControllers.getAllDoctors);
 
 router.get('/:did', doctorControllers.getDoctorById);
 
+router.use(auth);
+
 router.post('/add', 
     [
         check('specialty')
@@ -22,8 +24,6 @@ router.post('/add',
         .isEmpty()
     ],
 doctorControllers.addDoctor);
-
-router.use(auth);
 
 router.patch('/update/:did', 
     [

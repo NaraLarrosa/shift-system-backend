@@ -1,5 +1,7 @@
 const HttpError = require('../models/http-error');
 const Doctor = require('../models/doctor');
+const auth = require('../middleware/auth');
+const mongoose = require('mongoose');
 const { validationResult } = require('express-validator');
 
 const getAllDoctors = async (req, res, next) => {
@@ -10,6 +12,7 @@ const getAllDoctors = async (req, res, next) => {
       const error = new HttpError(
         'Fetching doctors failed, please try again later.',
         500
+
       );
       return next(error);
     }
@@ -44,52 +47,31 @@ const getDoctorById = async (req, res, next) => {
 const addDoctor = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return next(
-        new HttpError('Invalid inputs passed, please check your data.', 422)
-      );
-    }
-  
+        return next(
+        new HttpError('The data provided contains errors, please double-check your data.', 422)
+        );
+    };
+    
     const { name, surname, specialty } = req.body;
-  
+    
     const addDoctor = new Doctor({
-      name,
-      surname,
-      specialty,
+        name,
+        surname,
+        specialty
     });
-  
-    let user;
+    
     try {
-      user = await User.findById(req.userData.userId);
+        const sess = await mongoose.startSession();
+        sess.startTransaction();
+        await addDoctor.save({ session: sess });
+        await sess.commitTransaction();
     } catch (err) {
-      const error = new HttpError(
-        'The doctor could not be admitted. Please try again.',
+        const error = new HttpError(
+        'The entry of the new doctor was not successful; Try again.',
         500
-      );
-      return next(error);
-    }
-  
-    if (!user) {
-      const error = new HttpError('Could not find the doctor with the provided ID.', 404);
-      return next(error);
-    }
-  
-    console.log(user);
-  
-    try {
-      const sess = await mongoose.startSession();
-      sess.startTransaction();
-      await addDoctor.save({ session: sess });
-      user.doctors.push(addDoctor);
-      await user.save({ session: sess });
-      await sess.commitTransaction();
-    } catch (err) {
-      const error = new HttpError(
-        'Error when entering the doctor. Try again.',
-        500
-      );
-      return next(error);
-    }
-  
+        );
+        return next(error);
+    };
     res.status(201).json({ doctor: addDoctor });
 };
 
