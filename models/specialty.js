@@ -1,15 +1,3 @@
-// const mongoose = require('mongoose');
-
-// const specialtySchema = mongoose.model('Specialty', {
-//     name: {
-//         type: String,
-//         required: true,
-//         trim: true
-//     }
-// });
-
-// module.exports = specialtySchema;
-
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 

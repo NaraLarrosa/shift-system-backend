@@ -14,6 +14,16 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    dni: {
+        type: Number,
+        required: true,
+        trim: true
+    },
+    type: {
+        type: String,
+        required: true,
+        trim: true,
+    },
     email: {
         type: String,
         unique: true,
@@ -22,7 +32,7 @@ const userSchema = new mongoose.Schema({
         lowercase: true,
         validate(value) {
             if (!validator.isEmail(value)) {
-                throw new Error('Email is invalid')
+                throw new Error('Email is invalid');
             }
         }
     },
@@ -33,14 +43,9 @@ const userSchema = new mongoose.Schema({
         trim: true,
         validate(value) {
             if (value.toLowerCase().includes('password')) {
-                throw new Error('Password cannot contain "password"')
+                throw new Error('Password cannot contain "password"');
             }
         }
-    },
-    type: {
-        type: String,
-        required: true,
-        trim: true,
     },
     tokens: [{
         token: {
@@ -49,6 +54,12 @@ const userSchema = new mongoose.Schema({
         }
     }]
 });
+
+// userSchema.virtual('tasks', {
+//     ref: 'Task',
+//     localField: '_id',
+//     foreignField: 'owner'
+// })
 
 userSchema.methods.toJSON = function () {
     const user = this;
@@ -62,7 +73,7 @@ userSchema.methods.toJSON = function () {
 
 userSchema.methods.generateAuthToken = async function () {
     const user = this;
-    const token = jwt.sign({ _id: user._id.toString() }, 'thisismynewcourse');
+    const token = jwt.sign({ _id: user._id.toString(), type: user.type }, 'thisismynewcourse');
 
     user.tokens = user.tokens.concat({ token });
     await user.save();
@@ -80,7 +91,10 @@ userSchema.statics.findByCredentials = async (email, password) => {
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-        throw new Error('Unable to login');
+        throw new HttpError(
+            'Invalid credentials, could not log you in.',
+            403
+        );
     }
 
     return user;
@@ -90,15 +104,9 @@ userSchema.pre('save', async function (next) {
     const user = this;
 
     if (user.isModified('password')) {
-        user.password = await bcrypt.hash(user.password, 8)
-    }
+        user.password = await bcrypt.hash(user.password, 8);
+    };
 
-    next();
-})
-
-userSchema.pre('remove', async function (next) {
-    const user = this;
-    await Task.deleteMany({ owner: user._id })
     next();
 });
 

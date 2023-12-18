@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+
+const uniqueValidator = require('mongoose-unique-validator');
 
 const shiftSchema = new mongoose.Schema({
     day: {
@@ -22,7 +21,14 @@ const shiftSchema = new mongoose.Schema({
     available: {
         type: Boolean,
         required: true,
+    },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Doctor'
     }
 });
 
-module.exports = shiftSchema;
+shiftSchema.plugin(uniqueValidator);
+
+module.exports = mongoose.model('Shift', shiftSchema);;

@@ -1,8 +1,13 @@
 const express = require('express');
 const shiftControllers = require('../controllers/shift-controllers');
 const { check } = require('express-validator');
+const authAdmin = require('../middleware/auth-admin');
+const authPatient = require('../middleware/auth-patient');
+const auth = require('../middleware/auth');
 
 const router = express.Router();
+
+router.use(authAdmin);
 
 router.post('/create',
     [
@@ -16,28 +21,34 @@ router.post('/create',
     ],
 shiftControllers.createAvailableShift);
 
-router.patch('/update',
-    [
-        check('day')
-        .not()
-        .isEmpty(),
-        check('hour')
-        .not()
-        .isEmpty(),
-        check('description').isLength({ min: 5 })
-    ],
-shiftControllers.updateAvailableShift);
+// router.patch('/update',
+//     [
+//         check('day')
+//         .not()
+//         .isEmpty(),
+//         check('hour')
+//         .not()
+//         .isEmpty(),
+//         check('description').isLength({ min: 5 })
+//     ],
+// shiftControllers.updateAvailableShift);
 
-router.delete('/delete', shiftControllers.deleteAvailableShift);
+// router.delete('/delete', shiftControllers.deleteAvailableShift);
 
-router.get('/doc/:did', shiftControllers.shiftByDoctor);
+// router.get('/doc/:did', shiftControllers.getShiftByDoctor);
 
-router.get('/:pid', shiftControllers.shiftByPatient);
+// router.use(auth);
 
-router.put('/reservation', shiftControllers.shiftReservation);
+// router.get('/:pid', shiftControllers.getShiftByPatient);
 
-router.put('/cancel', shiftControllers.shiftCancel);
+// router.use(authPatient);
 
-router.get('/cancel/:pid', shiftControllers.cancellatioByPatient );
+// router.put('/reservation', shiftControllers.shiftReservation);
+
+// router.put('/cancel', shiftControllers.shiftCancel);
+
+// router.use(auth);
+
+// router.get('/cancel/:pid', shiftControllers.getCancellationByPatient );
 
 module.exports = router;

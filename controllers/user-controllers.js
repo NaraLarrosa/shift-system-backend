@@ -1,6 +1,5 @@
 const express = require('express');
 const User = require('../models/user');
-const auth = require('../middleware/auth');
 const mongoose = require('mongoose');
 const HttpError = require('../models/http-error');
 const { validationResult } = require('express-validator');
@@ -15,7 +14,7 @@ const registerUser = async (req, res, next) => {
       );
     }
   
-    const { name, surname, email, password, type } = req.body;
+    const { name, surname, dni, type, email, password } = req.body;
   
     let existingUser;
     try {
@@ -30,19 +29,8 @@ const registerUser = async (req, res, next) => {
   
     if (existingUser) {
       const error = new HttpError(
-        'User exists already, please login instead.',
+        'User already exists, please login instead.',
         422
-      );
-      return next(error);
-    }
-  
-    let hashedPassword;
-    try {
-      hashedPassword = await bcrypt.hash(password, 12);
-    } catch (err) {
-      const error = new HttpError(
-        'Could not create user, please try again.',
-        500
       );
       return next(error);
     }
@@ -50,9 +38,10 @@ const registerUser = async (req, res, next) => {
     const createdUser = new User({
       name,
       surname,
-      email,
-      password: hashedPassword,
+      dni,
       type,
+      email,
+      password
     });
   
     try {
@@ -64,22 +53,8 @@ const registerUser = async (req, res, next) => {
       );
       return next(error);
     }
-  
-    let token;
-    try {
-      token = jwt.sign(
-        { userId: createdUser.id, email: createdUser.email },
-        'thisismynewcourse',
-        //process.env.JWT_KEY,
-        { expiresIn: '1h' }
-      );
-    } catch (err) {
-      const error = new HttpError(
-        'Signing up failed, please try again later.',
-        500
-      );
-      return next(error);
-    }
+    
+    const token = await createdUser.generateAuthToken()
   
     res
       .status(201)
@@ -92,7 +67,7 @@ const loginUser = async (req, res, next) => {
     let existingUser;
   
     try {
-      existingUser = await User.findOne({ email: email });
+      existingUser = await User.findByCredentials(req.body.email, req.body.password)
     } catch (err) {
       const error = new HttpError(
         'Logging in failed, please try again later.',
@@ -108,41 +83,8 @@ const loginUser = async (req, res, next) => {
       );
       return next(error);
     }
-  
-    let isValidPassword = false;
-    try {
-      isValidPassword = await bcrypt.compare(password, existingUser.password);
-    } catch (err) {
-      const error = new HttpError(
-        'Could not log you in, please check your credentials and try again.',
-        500
-      );
-      return next(error);
-    }
-  
-    if (!isValidPassword) {
-      const error = new HttpError(
-        'Invalid credentials, could not log you in.',
-        403
-      );
-      return next(error);
-    }
-  
-    let token;
-    try {
-      token = jwt.sign(
-        { userId: existingUser.id, email: existingUser.email },
-        'thisismynewcourse',
-        //process.env.JWT_KEY,
-        { expiresIn: '1h' }
-      );
-    } catch (err) {
-      const error = new HttpError(
-        'Logging in failed, please try again later.',
-        500
-      );
-      return next(error);
-    }
+    
+    const token = await existingUser.generateAuthToken()
   
     res.json({
       userId: existingUser.id,

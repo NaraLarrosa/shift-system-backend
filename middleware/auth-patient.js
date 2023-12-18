@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
-const auth = async (req, res, next) => {
+const authPatient = async (req, res, next) => {
     try {
         const token = req.header('Authorization').replace('Bearer ', '');
         const decoded = jwt.verify(token, 'thisismynewcourse');
@@ -9,14 +9,18 @@ const auth = async (req, res, next) => {
 
         if (!user) {
             throw new Error();
-        };
+        }
+
+        if(decoded.type !== "patient") {
+            throw new Error("Only allowed for 'patient' users.");
+        }
 
         req.token = token;
         req.user = user;
         next()
     } catch (e) {
-        res.status(401).send({ error: 'Please authenticate.' });
-    };
+        res.status(401).send({ error: 'Please authenticate with patient.' });
+    }
 };
 
-module.exports = auth;
+module.exports = authPatient;
