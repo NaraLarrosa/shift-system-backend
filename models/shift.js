@@ -15,15 +15,14 @@ const shiftSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: true,
-        minlength: 5 
+        required: true
     },
     available: {
         type: Boolean,
         required: true,
     },
-    owner: {
-        type: mongoose.Schema.Types.ObjectId,
+    doctor: {
+        type: String,
         required: true,
         ref: 'Doctor'
     }

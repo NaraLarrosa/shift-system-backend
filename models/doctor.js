@@ -22,7 +22,6 @@ const doctorSchema = new Schema({
     specialty: {
         type: String,
         required: true,
-        trim: true,
         ref: 'Specialty'
     }
 });

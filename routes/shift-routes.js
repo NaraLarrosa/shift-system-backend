@@ -17,38 +17,66 @@ router.post('/create',
         check('hour')
         .not()
         .isEmpty(),
-        check('description').isLength({ min: 5 })
+        check('description').isLength({ min: 5 }),
+        check('available')
+        .not()
+        .isEmpty(),
+        check('doctor')
+        .not()
+        .isEmpty(),
     ],
 shiftControllers.createAvailableShift);
 
-// router.patch('/update',
-//     [
-//         check('day')
-//         .not()
-//         .isEmpty(),
-//         check('hour')
-//         .not()
-//         .isEmpty(),
-//         check('description').isLength({ min: 5 })
-//     ],
-// shiftControllers.updateAvailableShift);
+router.patch('/update/:sid',
+    [
+        check('day')
+        .not()
+        .isEmpty(),
+        check('hour')
+        .not()
+        .isEmpty(),
+        check('description').isLength({ min: 5 }),
+        check('available')
+        .not()
+        .isEmpty(),
+        check('doctor')
+        .not()
+        .isEmpty(),
+    ],
+shiftControllers.updateAvailableShift);
 
-// router.delete('/delete', shiftControllers.deleteAvailableShift);
+router.delete('/delete/:sid', shiftControllers.deleteAvailableShift);
 
-// router.get('/doc/:did', shiftControllers.getShiftByDoctor);
+router.get('/doc/:did', shiftControllers.getShiftByDoctor);
 
-// router.use(auth);
+router.use(auth);
 
-// router.get('/:pid', shiftControllers.getShiftByPatient);
+router.get('/pat/:pid', shiftControllers.getShiftByPatient);
 
-// router.use(authPatient);
+router.use(authPatient);
 
-// router.put('/reservation', shiftControllers.shiftReservation);
+router.put('/reservation',
+    [
+        check('day')
+        .not()
+        .isEmpty(),
+        check('hour')
+        .not()
+        .isEmpty(),
+        check('description').isLength({ min: 5 }),
+        check('available')
+        .not()
+        .isEmpty(),
+        check('doctor')
+        .not()
+        .isEmpty(),
+    ],
+ shiftControllers.shiftReservation);
 
-// router.put('/cancel', shiftControllers.shiftCancel);
+router.put('/cancel/:sid', shiftControllers.shiftCancel);
 
-// router.use(auth);
+router.use(auth);
 
-// router.get('/cancel/:pid', shiftControllers.getCancellationByPatient );
+router.get('/istory/cancel/:pid', shiftControllers.getCancellationByPatient );
 
 module.exports = router;

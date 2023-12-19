@@ -6,7 +6,7 @@ const { validationResult } = require('express-validator');
 const getAllDoctors = async (req, res, next) => {
   let doctors;
   try {
-      doctors = await Doctor.find({});
+      doctors = await Doctor.find();
   } catch (err) {
     const error = new HttpError(
       'Fetching doctors failed, please try again later.',
@@ -23,7 +23,7 @@ const getDoctorById = async (req, res, next) => {
 
   let doctor;
   try {
-      doctor = await Doctor.findById(doctorId);
+      doctor = await Doctor.findById(doctorId).populate('specialty');
   } catch (err) {
     const error = new HttpError(
       'An error occurred, the admitted doctor was not found',
@@ -52,6 +52,16 @@ const addDoctor = async (req, res, next) => {
   };
 
   const { name, surname, dni, specialty } = req.body;
+
+  try {
+    const existingDoctor = await Doctor.findOne({ dni, specialty });
+    if (existingDoctor) {
+      return next(new HttpError('Doctor with the same DNI and specialty already exists.', 422));
+    }
+  } catch (err) {
+    const error = new HttpError('Error checking existing doctor; Try again.', 500);
+    return next(error);
+  }
 
   const addDoctor = new Doctor({
       name,

@@ -29,12 +29,12 @@ router.use(auth);
 
 router.post('/login', userControllers.loginUser);
 
-// router.post('/recover-password',
-//     [
-//         check('email')
-//         .isEmail(),
-//         check('password').isLength({ min: 6 }),
-//     ],
-// userControllers.recoverPasswordUser);
+router.post('/recover-password/:uid',
+    [
+        check('email')
+        .isEmail(),
+        check('password').isLength({ min: 6 }),
+    ],
+userControllers.passwordRecovery);
 
 module.exports = router;
