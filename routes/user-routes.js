@@ -25,8 +25,6 @@ router.post('/register',
     ],
 userControllers.registerUser);
 
-router.use(auth);
-
 router.post('/login', userControllers.loginUser);
 
 router.post('/recover-password/:uid',

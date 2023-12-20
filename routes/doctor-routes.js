@@ -6,15 +6,11 @@ const authAdmin = require('../middleware/auth-admin');
 
 const router = express.Router();
 
-router.use(auth);
+router.get('/', auth , doctorControllers.getAllDoctors);
 
-router.get('/', doctorControllers.getAllDoctors);
+router.get('/:did', auth , doctorControllers.getDoctorById);
 
-router.get('/:did', doctorControllers.getDoctorById);
-
-router.use(authAdmin);
-
-router.post('/add', 
+router.post('/add', authAdmin ,
     [
         check('name')
         .not()
@@ -31,7 +27,7 @@ router.post('/add',
     ],
 doctorControllers.addDoctor);
 
-router.patch('/update/:did', 
+router.patch('/update/:did', authAdmin ,
     [
         check('name')
         .not()

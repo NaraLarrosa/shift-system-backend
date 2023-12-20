@@ -1,20 +1,21 @@
 const HttpError = require('../models/http-error');
 const Doctor = require('../models/doctor');
+const Specialty = require('../models/specialty');
 const mongoose = require('mongoose');
 const { validationResult } = require('express-validator');
 
 const getAllDoctors = async (req, res, next) => {
   let doctors;
   try {
-      doctors = await Doctor.find();
+      doctors = await Doctor.find().populate('specialty');
   } catch (err) {
     const error = new HttpError(
       'Fetching doctors failed, please try again later.',
       500
-
     );
     return next(error);
   }
+
   res.json({ doctors: doctors.map(doctor => doctor.toObject({ getters: true })) });
 };
 
@@ -23,7 +24,7 @@ const getDoctorById = async (req, res, next) => {
 
   let doctor;
   try {
-      doctor = await Doctor.findById(doctorId).populate('specialty');
+      doctor = await Doctor.findById(doctorId).populate('specialty').populate('shift');
   } catch (err) {
     const error = new HttpError(
       'An error occurred, the admitted doctor was not found',
@@ -40,7 +41,7 @@ const getDoctorById = async (req, res, next) => {
     return next(error);
   };
 
-  res.json({ doctor: doctor.toObject({ getters: true }) });
+  res.json({ doctor });
 };
 
 const addDoctor = async (req, res, next) => {
@@ -67,7 +68,8 @@ const addDoctor = async (req, res, next) => {
       name,
       surname,
       dni,
-      specialty
+      specialty,
+      shift: false
   });
 
   try {
@@ -82,7 +84,7 @@ const addDoctor = async (req, res, next) => {
       );
       return next(error);
   };
-  res.status(201).json({ doctor: addDoctor });
+  res.status(201).json(addDoctor);
 };
 
 const updateDoctor = async (req, res, next) => {
@@ -123,7 +125,7 @@ const updateDoctor = async (req, res, next) => {
     return next(error);
   };
   
-  res.status(200).json({ doctor: doctor.toObject({ getters: true }) });
+  res.status(200).json(doctor);
 };
 
 exports.getAllDoctors = getAllDoctors;

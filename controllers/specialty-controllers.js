@@ -6,7 +6,7 @@ const { validationResult } = require('express-validator');
 const getSpecialties = async (req, res, next) => {
   let specialties;
   try {
-    specialties = await Specialty.find();
+    specialties = await Specialty.find({});
   } catch (err) {
     const error = new HttpError(
       'Fetching users failed, please try again later.',
@@ -14,7 +14,7 @@ const getSpecialties = async (req, res, next) => {
     )
     return next(error);
   }
-  res.json({ specialties: specialties.map(specialty => specialty.toObject({ getters: true })) });
+  res.json(specialties.map(specialty => specialty));
 };
 
 const addSpecialties = async (req, res, next) => {
@@ -30,32 +30,15 @@ const addSpecialties = async (req, res, next) => {
 
   const { name } = req.body;
 
-  // try {
-  //   const specialtyExist = await Specialty.findOne({ name: specialty });
-
-  //   if (!specialtyExist) {
-  //     return next(new HttpError(
-  //       'The specialty provided does not exist.',
-  //       422
-  //     ));
-  //   }
-
-  //   const doctorExist = await Doctor.findOne({ dni, specialty });
-
-  //   if (doctorExist) {
-  //     return next(new HttpError(
-  //       'There is already a doctor with the same ID and specialty.',
-  //       422
-  //     ));
-  //   };
-  // } 
-  // catch (err) {
-  //   const error = new HttpError(
-  //     'Error checking existing doctor; Try again.',
-  //     500
-  //   );
-  //   return next(error);
-  // };
+  try {
+    const existingSpecialty = await Specialty.findByName({ name });
+    if (existingSpecialty) {
+      return next(new HttpError('Specialty with the same name already exists.', 422));
+    }
+  } catch (err) {
+    const error = new HttpError('Error checking existing specialty.', 500);
+    return next(error);
+  }
 
   const addSpecialty = new Specialty({
     name
@@ -73,7 +56,7 @@ const addSpecialties = async (req, res, next) => {
     );
     return next(error);
   };
-  res.status(201).json({ specialty: addSpecialty });
+  res.status(201).json(addSpecialty);
 };
 
 exports.getSpecialties = getSpecialties;

@@ -25,6 +25,15 @@ const shiftSchema = new mongoose.Schema({
         type: String,
         required: true,
         ref: 'Doctor'
+    },
+    canceled: {
+        type: Boolean,
+        required: true
+    },
+    user: {
+        type: String,
+        required: false,
+        ref: 'User'
     }
 });
 

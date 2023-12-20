@@ -20,9 +20,21 @@ const createAvailableShift = async (req, res, next) => {
         hour,
         description,
         available,
-        doctor
+        doctor,
+        canceled: false,
+        user: ""
     });
     
+    try {
+      const existingShift = await Shift.findOne({ day, hour, doctor });
+      if (existingShift) {
+        return next(new HttpError('Existing shift!', 422));
+      }
+    } catch (err) {
+      const error = new HttpError('Error checking existing shift.', 500);
+      return next(error);
+    };
+
     try {
         const sess = await mongoose.startSession();
         sess.startTransaction();
@@ -35,7 +47,7 @@ const createAvailableShift = async (req, res, next) => {
         );
         return next(error);
     };
-    res.status(201).json({ shift: createShift });
+    res.status(201).json(createShift);
 };
 
 const updateAvailableShift = async (req, res, next) => {
@@ -76,7 +88,7 @@ const updateAvailableShift = async (req, res, next) => {
       return next(error);
     };
     
-    res.status(200).json({ shift: shift.toObject({ getters: true }) });
+    res.status(200).json({ shift });
 };
 
 const deleteAvailableShift = async (req, res, next) => {
@@ -129,11 +141,7 @@ const getShiftByDoctor = async (req, res, next) => {
       return next(error);
     }
 
-    res.json({
-      shifts: shiftByDoctor.map(shift =>
-        shift.toObject({ getters: true })
-      )
-    });
+    res.json({ shiftByDoctor });
 };
   
 const getShiftByPatient = async (req, res, next) => {
@@ -141,7 +149,7 @@ const getShiftByPatient = async (req, res, next) => {
 
   let shiftByPatient;
   try {
-    shiftByPatient = await Shift.find({ 'user' : patientId });  
+    shiftByPatient = await Shift.find({ 'user' : patientId, canceled: false });  
   } catch (err) {
     const error = new HttpError(
       'Fetching patient failed, please try again later.',
@@ -150,19 +158,15 @@ const getShiftByPatient = async (req, res, next) => {
     return next(error);
   }
 
-  res.json({
-    shifts: shiftByPatient.map(shift =>
-      shift.toObject({ getters: true })
-    )
-  });
+  res.json({ shiftByPatient });
 };
 
 const shiftReservation = async (req, res, next) => {
-    const { day, hour, description, available, doctor } = req.body;
+    const sid = req.params.sid;
 
     let shift;
     try {
-      shift = await User.findById(pid);
+      shift = await Shift.findById(sid);
     } catch (err) {
         const error = new HttpError(
             'An error occurred, the shift was not found',
@@ -171,42 +175,22 @@ const shiftReservation = async (req, res, next) => {
         return next(error);
     };
 
-    let shiftById;
-    try {
-        shiftById = await Shift.findById(sid);
-    } catch (err) {
-        const error = new HttpError(
-            'An error occurred, the id shift was not found',
-            500
-        );
-        return next(error);
-    };
-    
-    const shiftList = shiftById.shift;
-    
-    const shiftAvailable = {
-        day : shift.day,
-        hour : shift.hour,
-        description : shift.description,
-        available : shift.available,
-        doctor : shift.doctor
+    if(shift.available === false) {
+      const error = new HttpError(
+        'Could not take the turn because is not available',
+        404
+      );
+      return next(error);
     }
 
-    let shiftExist = false;
-    shiftList.forEach(element => {
-        if(element.shift.id === shift.id){
-            ProductExist = true;
-        }
-    });
-
-    if(!shiftExist) shiftList.push(shiftAvailable);
-
-    shiftById.shift = shiftList;
+    shift.available = false;
+    shift.user = req.user._id;
+    shift.canceled = false;
 
     try {
         const sess = await mongoose.startSession();
         sess.startTransaction();
-        await shiftById.save({ session: sess });
+        await shift.save({ session: sess });
         await sess.commitTransaction();
     } catch (err) {
         const error = new HttpError(
@@ -216,85 +200,72 @@ const shiftReservation = async (req, res, next) => {
         return next(error);
     };
 
-    res.status(201).json({ shift : shiftById });
+    res.status(201).json({ shift });
 };
 
 const shiftCancel = async (req, res, next) => {
     const sid = req.params.sid;
-    const saId = req.params.saId;
-    
+
     let shift;
     try {
-        shift = await Shift.findById(saId);
+      shift = await Shift.findById(sid);
     } catch (err) {
         const error = new HttpError(
-            'An error occurred, the shift was not found',
+            'The shift was not found',
             500
         );
         return next(error);
     };
 
-    let shiftById;
-    try {
-        shiftById = await Shift.findById(sid);
-    } catch (err) {
-        const error = new HttpError(
-            'An error occurred, the shift was not found',
-            500
-        );
-        return next(error);
-    };
+    if(shift.canceled === true) {
+      const error = new HttpError(
+        'The shift has already been canceled',
+        404
+      );
+      return next(error);
+    } else {
+      shift.canceled = true;
+      shift.available = true;
+    }
 
     try {
         const sess = await mongoose.startSession();
         sess.startTransaction();
-        await shiftById.save({ session: sess });
+        await shift.save({ session: sess });
         await sess.commitTransaction();
     } catch (err) {
         const error = new HttpError(
-            'The shift could not be deleted, please try again.',
+            'The shift could not be canceled, please try again.',
             500
         );
         return next(error);
     };
 
-    res.status(201).json({ shift : shiftById });
+    res.status(201).json({ shift });
 };
 
 const getCancellationByPatient = async (req, res, next) => {
-    const shiftById = req.params.pid;
+    const pid = req.params.pid;
 
-    let shift;
+    let shifts;
     try {
-      shift = await Shift.findById(pid);
+      shifts = await Shift.find({user: pid, canceled: true}).populate('doctor').populate('user');
     } catch (err) {
       const error = new HttpError(
-        'Something went wrong, could not delete the shift.',
+        'Something went wrong, could not found the shifts.',
         500
       );
       return next(error);
     }
   
-    if (!shift) {
+    if (!shifts) {
       const error = new HttpError('Could not find the shift for this id.',
         404);
       return next(error);
     }
-  
-    try {
-      const sess = await mongoose.startSession();
-      sess.startTransaction();
-      await Shift.deleteOne({'_id': pid}, {sess})
-      await sess.commitTransaction();
-    } catch (err) {
-      const error = new HttpError(
-        'An error occurred, could not delete the shift.',
-        500
-      );
-      return next(error);
-    };
-  
-    res.status(200).json({ message: 'Deleted shift.' });
+
+    res.json({ shifts });
+
 };
 
 exports.createAvailableShift = createAvailableShift;
