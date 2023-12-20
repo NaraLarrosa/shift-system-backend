@@ -1,6 +1,6 @@
 const HttpError = require('../models/http-error');
 const Doctor = require('../models/doctor');
-const Specialty = require('../models/specialty');
+const Shift = require('../models/shift');
 const mongoose = require('mongoose');
 const { validationResult } = require('express-validator');
 
@@ -24,7 +24,7 @@ const getDoctorById = async (req, res, next) => {
 
   let doctor;
   try {
-      doctor = await Doctor.findById(doctorId).populate('specialty').populate('shift');
+      doctor = await Doctor.findById(doctorId).populate('specialty');
   } catch (err) {
     const error = new HttpError(
       'An error occurred, the admitted doctor was not found',
@@ -41,7 +41,18 @@ const getDoctorById = async (req, res, next) => {
     return next(error);
   };
 
-  res.json({ doctor });
+  let shifts;
+  try {
+    shifts = await Shift.find({doctor: doctorId}).populate('doctor');
+  } catch (err) {
+    const error = new HttpError(
+      'Something went wrong, could not found the shifts by doctor.',
+      500
+    );
+    return next(error);
+  }
+
+  res.json({ doctor, shifts});
 };
 
 const addDoctor = async (req, res, next) => {
@@ -68,8 +79,7 @@ const addDoctor = async (req, res, next) => {
       name,
       surname,
       dni,
-      specialty,
-      shift: false
+      specialty
   });
 
   try {

@@ -1,9 +1,7 @@
 const Shift = require('../models/shift');
-const User = require('../models/user');
 const mongoose = require('mongoose');
 const HttpError = require('../models/http-error');
 const { validationResult } = require('express-validator');
-const bcrypt = require('bcryptjs');
 
 const createAvailableShift = async (req, res, next) => {
     const errors = validationResult(req);

@@ -23,11 +23,6 @@ const doctorSchema = new Schema({
         type: String,
         required: true,
         ref: 'Specialty'
-    },
-    shift: {
-        type: String,
-        required: true,
-        ref: 'Shift'
     }
 });
 
