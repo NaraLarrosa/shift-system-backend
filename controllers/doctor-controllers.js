@@ -6,15 +6,21 @@ const { validationResult } = require('express-validator');
 
 const getAllDoctors = async (req, res, next) => {
   let doctors;
+  let limit = req.query.limit;
+  let skip = req.query.skip;
+
   try {
-      doctors = await Doctor.find().populate('specialty');
+    doctors = await Doctor.find()
+      .limit(limit)
+      .skip(skip)
+      .populate('specialty');
   } catch (err) {
     const error = new HttpError(
       'Fetching doctors failed, please try again later.',
       500
     );
     return next(error);
-  }
+  };
 
   res.json({ doctors: doctors.map(doctor => doctor.toObject({ getters: true })) });
 };
@@ -76,23 +82,23 @@ const addDoctor = async (req, res, next) => {
   }
 
   const addDoctor = new Doctor({
-      name,
-      surname,
-      dni,
-      specialty
+    name,
+    surname,
+    dni,
+    specialty
   });
 
   try {
-      const sess = await mongoose.startSession();
-      sess.startTransaction();
-      await addDoctor.save({ session: sess });
-      await sess.commitTransaction();
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    await addDoctor.save({ session: sess });
+    await sess.commitTransaction();
   } catch (err) {
-      const error = new HttpError(
+    const error = new HttpError(
       'The entry of the new doctor was not successful; Try again.',
       500
-      );
-      return next(error);
+    );
+    return next(error);
   };
   res.status(201).json(addDoctor);
 };

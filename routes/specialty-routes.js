@@ -6,13 +6,9 @@ const authAdmin = require('../middleware/auth-admin');
 
 const router = express.Router();
 
-router.use(auth);
+router.get('/', auth, specialtyControllers.getSpecialties);
 
-router.get('/', specialtyControllers.getSpecialties);
-
-router.use(authAdmin);
-
-router.post('/add', 
+router.post('/add', authAdmin,
 [
     check('name')
     .not()

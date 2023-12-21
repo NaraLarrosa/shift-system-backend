@@ -5,8 +5,13 @@ const { validationResult } = require('express-validator');
 
 const getSpecialties = async (req, res, next) => {
   let specialties;
+  let limit = req.query.limit;
+  let skip = req.query.skip;
+
   try {
-    specialties = await Specialty.find({});
+    specialties = await Specialty.find({})
+    .limit(limit)
+    .skip(skip);
   } catch (err) {
     const error = new HttpError(
       'Fetching users failed, please try again later.',

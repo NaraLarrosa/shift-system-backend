@@ -24,12 +24,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/user/register",
+							"raw": "http://localhost:5000/api/user/register",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "5000",
 							"path": [
 								"api",
 								"user",
@@ -43,20 +43,13 @@
 					"name": "login-user",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgwOGI1MTI3ZjgyOTc4NjdjOTU1M2UiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MDI5MjMwOTB9.MKFCpyAQ1gBDt-pRyBcokLoPvUQejPSypdSfreoaJR0",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"test1@gmail.com\",\r\n    \"password\": \"hola1234\"\r\n}",
+							"raw": "{\r\n    \"email\": \"admin@admin.com\",\r\n    \"password\": \"hola1234\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -64,12 +57,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/user/login",
+							"raw": "http://localhost:5000/api/user/login",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "5000",
 							"path": [
 								"api",
 								"user",
@@ -92,7 +85,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgwNjg0MWMwZGY0OTMzNDlkZTJmOTciLCJ0eXBlIjoicGF0aWVudCIsImlhdCI6MTcwMjkxNDExM30.vnD_jDqmjqNCq9kr4vDZgbgbm7Ru-120NwXG661ESDw",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgyMmQ5OWQ0YTNhYzkzNTg5Yjk4YWQiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MDMxNjc4MDl9.Q92FQGpCZM2qZW0HNiwBWbhhrTx8j6qV2k8Q20Kb-p0",
 									"type": "string"
 								}
 							]
@@ -106,16 +99,25 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:3000/api/doctor/",
+							"raw": "http://localhost:5000/api/doctor?limit=10&skip=0",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "5000",
 							"path": [
 								"api",
-								"doctor",
-								""
+								"doctor"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "skip",
+									"value": "0"
+								}
 							]
 						}
 					},
@@ -129,7 +131,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgwNjg0MWMwZGY0OTMzNDlkZTJmOTciLCJ0eXBlIjoicGF0aWVudCIsImlhdCI6MTcwMjkxNDExM30.vnD_jDqmjqNCq9kr4vDZgbgbm7Ru-120NwXG661ESDw",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgyMmQ5OWQ0YTNhYzkzNTg5Yjk4YWQiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MDMxMjk2MjJ9.RGEkIFRVHI0sxuDoWsdMslbreOleXo06ANaa0raCHUQ",
 									"type": "string"
 								}
 							]
@@ -137,12 +139,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/api/doctor/:did",
+							"raw": "http://localhost:5000/api/doctor/:did",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "5000",
 							"path": [
 								"api",
 								"doctor",
@@ -151,7 +153,7 @@
 							"variable": [
 								{
 									"key": "did",
-									"value": "65808c5627f8297867c95558"
+									"value": "658248c94d02e72006bbca98"
 								}
 							]
 						}
@@ -166,7 +168,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgwNzFhZjFiOTM2MWUyMTE1NWIwNjkiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MDI5NDc0NTd9.b6sPcZWejOoY7-uItVILWxePfZE7lWEdX5PrzF0FEm8",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgyMmQ5OWQ0YTNhYzkzNTg5Yjk4YWQiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MDMwMzUyNTl9.tRMtN-6RRzCu8jUFS8Ia2UpCu6LZwHxg9OCAM9FkMJw",
 									"type": "string"
 								}
 							]
@@ -175,7 +177,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\" : \"AA\",\r\n    \"surname\" : \"Lopez\",\r\n    \"dni\": 74569321,\r\n    \"specialty\" : \"65810325ca111dfeaeb3b637\"\r\n}",
+							"raw": "{\r\n    \"name\" : \"kkk\",\r\n    \"surname\" : \"ppp\",\r\n    \"dni\": 1111111,\r\n    \"specialty\" : \"65810325ca111dfeaeb3b637\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -183,12 +185,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/doctor/add",
+							"raw": "http://localhost:5000/api/doctor/add",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "5000",
 							"path": [
 								"api",
 								"doctor",
@@ -206,7 +208,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgwNzFhZjFiOTM2MWUyMTE1NWIwNjkiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MDI5MTY1Mjd9.EE-9SPdAc-8R6hlEiq5tUUH7J3yJ_3mVzH1wiKjmBVo",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgyMmQ5OWQ0YTNhYzkzNTg5Yjk4YWQiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MDMwMzUyNTl9.tRMtN-6RRzCu8jUFS8Ia2UpCu6LZwHxg9OCAM9FkMJw",
 									"type": "string"
 								}
 							]
@@ -215,7 +217,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\" : \"Jose\",\r\n    \"surname\" : \"Pepito\",\r\n    \"dni\":27583104, \r\n    \"specialty\" : \"Dermatologia \"\r\n}",
+							"raw": "{\r\n    \"name\" : \"Jose\",\r\n    \"surname\" : \"Pepito\",\r\n    \"dni\":27583104, \r\n    \"specialty\" : \"65810325ca111dfeaeb3b637\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -223,12 +225,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/doctor/update/:did",
+							"raw": "http://localhost:5000/api/doctor/update/:did",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "5000",
 							"path": [
 								"api",
 								"doctor",
@@ -238,7 +240,7 @@
 							"variable": [
 								{
 									"key": "did",
-									"value": "657b4e5c664ad3e07b760ec1"
+									"value": "6582455bfeb3e73461590216"
 								}
 							]
 						}
@@ -258,7 +260,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgwNzFhZjFiOTM2MWUyMTE1NWIwNjkiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MDI5MTY1Mjd9.EE-9SPdAc-8R6hlEiq5tUUH7J3yJ_3mVzH1wiKjmBVo",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgyMmQ5OWQ0YTNhYzkzNTg5Yjk4YWQiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MDMxNjc4MDl9.Q92FQGpCZM2qZW0HNiwBWbhhrTx8j6qV2k8Q20Kb-p0",
 									"type": "string"
 								}
 							]
@@ -266,15 +268,25 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/api/specialty",
+							"raw": "http://localhost:5000/api/specialty?limit=1&skip=2",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "5000",
 							"path": [
 								"api",
 								"specialty"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "1"
+								},
+								{
+									"key": "skip",
+									"value": "2"
+								}
 							]
 						}
 					},
@@ -288,7 +300,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgwOGI1MTI3ZjgyOTc4NjdjOTU1M2UiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MDI5MjMwOTB9.MKFCpyAQ1gBDt-pRyBcokLoPvUQejPSypdSfreoaJR0",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgyMmQ5OWQ0YTNhYzkzNTg5Yjk4YWQiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MDMwMzUyNTl9.tRMtN-6RRzCu8jUFS8Ia2UpCu6LZwHxg9OCAM9FkMJw",
 									"type": "string"
 								}
 							]
@@ -297,7 +309,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\" : \"Dermatologo\"\r\n}",
+							"raw": "{\r\n    \"name\" : \"Medico Clinico\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -305,12 +317,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/specialty/add",
+							"raw": "http://localhost:5000/api/specialty/add",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "5000",
 							"path": [
 								"api",
 								"specialty",
@@ -328,11 +340,21 @@
 				{
 					"name": "create-available-shift",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgyMmQ5OWQ0YTNhYzkzNTg5Yjk4YWQiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MDMwMzUyNTl9.tRMtN-6RRzCu8jUFS8Ia2UpCu6LZwHxg9OCAM9FkMJw",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"day\" : \"Miercoles\",\r\n    \"hour\" : 8,\r\n    \"description\" : \"Consulta medica\",\r\n    \"available\" : true,\r\n    \"doctor\" : \"6581a234d085547488c23676\"\r\n}",
+							"raw": "{\r\n    \"day\" : \"Viernes\",\r\n    \"hour\" : 12,\r\n    \"description\" : \"Consulta medica\",\r\n    \"available\" : true,\r\n    \"doctor\" : \"6582dd4cfcee80f49ff40fa2\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -340,12 +362,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/shift/create",
+							"raw": "http://localhost:5000/api/shift/create",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "5000",
 							"path": [
 								"api",
 								"shift",
@@ -358,6 +380,16 @@
 				{
 					"name": "update-available-shift",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgyMmQ5OWQ0YTNhYzkzNTg5Yjk4YWQiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MDMwMzUyNTl9.tRMtN-6RRzCu8jUFS8Ia2UpCu6LZwHxg9OCAM9FkMJw",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PATCH",
 						"header": [],
 						"body": {
@@ -370,12 +402,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/shift/update/:sid?=",
+							"raw": "http://localhost:5000/api/shift/update/:sid?=",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "5000",
 							"path": [
 								"api",
 								"shift",
@@ -391,7 +423,7 @@
 							"variable": [
 								{
 									"key": "sid",
-									"value": "6581c013729e71b48b8639a6"
+									"value": "658243f16eff6e40254440f0"
 								}
 							]
 						}
@@ -401,15 +433,25 @@
 				{
 					"name": "delete-available-shift",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgyMmQ5OWQ0YTNhYzkzNTg5Yjk4YWQiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MDMwMzUyNTl9.tRMtN-6RRzCu8jUFS8Ia2UpCu6LZwHxg9OCAM9FkMJw",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/api/shift/delete/:sid?=",
+							"raw": "http://localhost:5000/api/shift/delete/:sid?=",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "5000",
 							"path": [
 								"api",
 								"shift",
@@ -425,7 +467,7 @@
 							"variable": [
 								{
 									"key": "sid",
-									"value": "65819f71e8584ccaef8e563d"
+									"value": "658251485d4b623800ee7750"
 								}
 							]
 						}
@@ -435,20 +477,40 @@
 				{
 					"name": "get-shift-by-doctor",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgyMmQ5OWQ0YTNhYzkzNTg5Yjk4YWQiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MDMxNjc4MDl9.Q92FQGpCZM2qZW0HNiwBWbhhrTx8j6qV2k8Q20Kb-p0",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/api/shift/doc/:did",
+							"raw": "http://localhost:5000/api/shift/doc/:did?limit=5&skip=0",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "5000",
 							"path": [
 								"api",
 								"shift",
 								"doc",
 								":did"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "5"
+								},
+								{
+									"key": "skip",
+									"value": "0"
+								}
 							],
 							"variable": [
 								{
@@ -463,15 +525,25 @@
 				{
 					"name": "get-shift-by-patient",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgyMmQ5OWQ0YTNhYzkzNTg5Yjk4YWQiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MDMxMjk2MjJ9.RGEkIFRVHI0sxuDoWsdMslbreOleXo06ANaa0raCHUQ",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/api/shift/pat/:pid",
+							"raw": "http://localhost:5000/api/shift/pat/:pid",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "5000",
 							"path": [
 								"api",
 								"shift",
@@ -481,7 +553,7 @@
 							"variable": [
 								{
 									"key": "pid",
-									"value": "6581c834128f41a3d00407fb"
+									"value": "65822db5d4a3ac93589b98b2"
 								}
 							]
 						}
@@ -491,11 +563,21 @@
 				{
 					"name": "shift-reserve",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgyMmRiNWQ0YTNhYzkzNTg5Yjk4YjIiLCJ0eXBlIjoicGF0aWVudCIsImlhdCI6MTcwMzAzMDE5N30.gOUcUGXEsA4dPI2qUQSFpDGO3IEcks-1hYSPxe79XBU",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"day\" : \"Jueves\",\r\n    \"hour\" : \"10\",\r\n    \"description\" : \"Turno tomado\",\r\n    \"available\" : true,\r\n    \"doctor\" : \"6581a234d085547488c23676\"\r\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -503,16 +585,23 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/shift/reservation",
+							"raw": "http://localhost:5000/api/shift/reservation/:sid",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "5000",
 							"path": [
 								"api",
 								"shift",
-								"reservation"
+								"reservation",
+								":sid"
+							],
+							"variable": [
+								{
+									"key": "sid",
+									"value": "6582606d97be71220904c8d0"
+								}
 							]
 						}
 					},
@@ -521,15 +610,25 @@
 				{
 					"name": "shift-cancel",
 					"request": {
-						"method": "DELETE",
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgyMmRiNWQ0YTNhYzkzNTg5Yjk4YjIiLCJ0eXBlIjoicGF0aWVudCIsImlhdCI6MTcwMzAzMDE5N30.gOUcUGXEsA4dPI2qUQSFpDGO3IEcks-1hYSPxe79XBU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/api/shift/cancel/:sid",
+							"raw": "http://localhost:5000/api/shift/cancel/:sid",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "5000",
 							"path": [
 								"api",
 								"shift",
@@ -539,7 +638,7 @@
 							"variable": [
 								{
 									"key": "sid",
-									"value": ""
+									"value": "658258d3ea275c3072560245"
 								}
 							]
 						}
@@ -549,15 +648,25 @@
 				{
 					"name": "get-cancel-by-patient",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgyMmQ5OWQ0YTNhYzkzNTg5Yjk4YWQiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MDMxNjc4MDl9.Q92FQGpCZM2qZW0HNiwBWbhhrTx8j6qV2k8Q20Kb-p0",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/api/shift/history/cancel/:pid",
+							"raw": "http://localhost:5000/api/shift/history/cancel/:pid?limit=10&skip=0",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "5000",
 							"path": [
 								"api",
 								"shift",
@@ -565,10 +674,20 @@
 								"cancel",
 								":pid"
 							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "skip",
+									"value": "0"
+								}
+							],
 							"variable": [
 								{
 									"key": "pid",
-									"value": ""
+									"value": "65822db5d4a3ac93589b98b2"
 								}
 							]
 						}
