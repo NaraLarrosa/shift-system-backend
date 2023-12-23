@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const HttpError = require('../models/http-error');
 const { validationResult } = require('express-validator');
 const nodemailer = require("nodemailer");
+require('dotenv');
 
 const registerUser = async (req, res, next) => {
     const errors = validationResult(req);
@@ -131,33 +132,31 @@ const passwordRecovery = async (req, res, next) => {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
   };
+};
 
-  const resetPassword = async (req, res, next) => {
-    try {
-      const resetToken = req.params.token;
-  
-      const decodedToken = jwt.verify(resetToken, 'resetKey');
-      const userId = decodedToken.userId;
-  
-      const user = await User.findOne({ _id: userId, resetToken });
-  
-      if (!user) {
-        return res.status(401).json({ message: 'Invalid token' });
-      }
+const resetPassword = async (req, res, next) => {
+  try {
+    const resetToken = req.params.token;
 
-      const newPassword = req.body.newPassword;
-  
-      user.password = newPassword;
-      user.resetToken = null;
-      user.resetTokenExpiration = null;
-      await user.save();
-  
-      res.status(200).json({ message: 'Password updated successfully' });
+    const decodedToken = jwt.verify(resetToken, 'resetKey');
+    const userId = decodedToken.userId;
 
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Internal Server Error' });
-    };
+    const user = await User.findOne({ _id: userId });
+
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid token' });
+    }
+
+    const newPassword = req.body.newPassword;
+
+    user.password = newPassword;
+    await user.save();
+
+    res.status(200).json({ message: 'Password updated successfully' });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
   };
 };
 

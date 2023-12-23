@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Juana\",\r\n    \"surname\": \"de Arco\",\r\n    \"dni\": 8579650,\r\n    \"type\": \"patient\",\r\n    \"email\": \"test0@gmail.com\",\r\n    \"password\": \"hola1234\"\r\n\r\n}",
+							"raw": "{\r\n    \"name\": \"Nara\",\r\n    \"surname\": \"Larrosa\",\r\n    \"dni\": 36748750,\r\n    \"type\": \"admin\",\r\n    \"email\": \"larrosanara@gmail.com\",\r\n    \"password\": \"tomate2023\"\r\n\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -49,7 +49,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"admin@admin.com\",\r\n    \"password\": \"hola1234\"\r\n}",
+							"raw": "{\r\n    \"email\": \"larrosanara@gmail.com\",\r\n    \"password\": \"hola12345\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -67,6 +67,86 @@
 								"api",
 								"user",
 								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "recover-password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTg1YzdiZDY1NmU4ODBmYzE1Y2E1OTEiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MDMyNzMxMzR9.HX9v2QbFtHyKmjcAB0xopK90FNjVT6jXJZDYW8CD8PU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"larrosanara@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/user/recover-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"user",
+								"recover-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset-password",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"newPassword\": \"hola12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/user/reset-password/:token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"user",
+								"reset-password",
+								":token"
+							],
+							"variable": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTg1YzdiZDY1NmU4ODBmYzE1Y2E1OTEiLCJpYXQiOjE3MDMzMDQ1NTAsImV4cCI6MTcwMzMwODE1MH0.-GUa41XfsAUkJGbmvmIU1A7PL1Qve4q5giDjvVym4LQ"
+								}
 							]
 						}
 					},
@@ -438,7 +518,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgyMmQ5OWQ0YTNhYzkzNTg5Yjk4YWQiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MDMwMzUyNTl9.tRMtN-6RRzCu8jUFS8Ia2UpCu6LZwHxg9OCAM9FkMJw",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgyMmQ5OWQ0YTNhYzkzNTg5Yjk4YWQiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MDMxMjk2MjJ9.RGEkIFRVHI0sxuDoWsdMslbreOleXo06ANaa0raCHUQ",
 									"type": "string"
 								}
 							]
@@ -467,7 +547,7 @@
 							"variable": [
 								{
 									"key": "sid",
-									"value": "658251485d4b623800ee7750"
+									"value": "6582606d97be71220904c8d0"
 								}
 							]
 						}
