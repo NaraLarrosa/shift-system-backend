@@ -27,8 +27,9 @@ const createAvailableShift = async (req, res, next) => {
   });
   
   try {
-    const existingShift = await Shift.findOne({ day, hour, doctor });
-    if (existingShift) {
+    const existingShift = await Shift.find({ day, hour, doctor });
+
+    if (existingShift.length !==0) {
       return next(new HttpError('Existing shift!', 422));
     }
   } catch (err) {

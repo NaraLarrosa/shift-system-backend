@@ -19,7 +19,7 @@ const registerUser = async (req, res, next) => {
   
     let existingUser;
     try {
-      existingUser = await User.findOne({ email: email });
+      existingUser = await User.find({ email: email });
     } catch (err) {
       const error = new HttpError(
         'Signing up failed.',
@@ -28,7 +28,7 @@ const registerUser = async (req, res, next) => {
       return next(error);
     }
   
-    if (existingUser) {
+    if (existingUser.length !==0) {
       const error = new HttpError(
         'User already exists, please login instead.',
         422
@@ -160,7 +160,29 @@ const resetPassword = async (req, res, next) => {
   };
 };
 
+const getAllPatient = async (req, res, next) => {
+  let users;
+  let limit = req.query.limit;
+  let skip = req.query.skip;
+
+  try {
+
+    users = await User.find({type : 'patient'})
+    .limit(limit)
+    .skip(skip);
+
+  } catch (err) {
+    const error = new HttpError(
+      'Fetching users failed, please try again later.',
+      500
+    )
+    return next(error);
+  }
+  res.json({ users: users.map(user => user.toObject({ getters: true })) });
+};
+
 exports.registerUser = registerUser;
 exports.loginUser = loginUser;
 exports.passwordRecovery = passwordRecovery;
 exports.resetPassword = resetPassword;
+exports.getAllPatient = getAllPatient;

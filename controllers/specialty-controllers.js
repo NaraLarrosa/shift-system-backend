@@ -19,7 +19,7 @@ const getSpecialties = async (req, res, next) => {
     )
     return next(error);
   }
-  res.json(specialties.map(specialty => specialty));
+  res.json({ specialties: specialties.map(specialty => specialty.toObject({ getters: true })) });
 };
 
 const addSpecialties = async (req, res, next) => {
@@ -36,8 +36,9 @@ const addSpecialties = async (req, res, next) => {
   const { name } = req.body;
 
   try {
-    const existingSpecialty = await Specialty.findByName({ name });
-    if (existingSpecialty) {
+    const existingSpecialty = await Specialty.find({ name });
+    
+    if (existingSpecialty.length !== 0) {
       return next(new HttpError('Specialty with the same name already exists.', 422));
     }
   } catch (err) {

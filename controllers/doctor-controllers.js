@@ -72,8 +72,9 @@ const addDoctor = async (req, res, next) => {
   const { name, surname, dni, specialty } = req.body;
 
   try {
-    const existingDoctor = await Doctor.findOne({ dni, specialty });
-    if (existingDoctor) {
+    const existingDoctor = await Doctor.find({ dni, specialty });
+
+    if (existingDoctor.length !==0) {
       return next(new HttpError('Doctor with the same DNI and specialty already exists.', 422));
     }
   } catch (err) {
@@ -117,7 +118,12 @@ const updateDoctor = async (req, res, next) => {
 
   let doctor;
   try {
-    doctor = await Doctor.findById(doctorId);
+    doctor = await Doctor.findOne({ _id: doctorId });
+    if (!doctor) {
+      return next(
+        new HttpError('Doctor not found.', 404)
+      );
+    };
   } catch (err) {
     const error = new HttpError(
       'Something went wrong, could not update the doctor.',
@@ -129,7 +135,7 @@ const updateDoctor = async (req, res, next) => {
   doctor.name = name;
   doctor.surname = surname;
   doctor.dni = dni;
-  doctor.specialty = specialty;
+  doctor.specialty = specialty.value;
 
   try {
     await doctor.save();

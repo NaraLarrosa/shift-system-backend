@@ -35,4 +35,6 @@ userControllers.passwordRecovery);
 
 router.patch('/reset-password/:token', userControllers.resetPassword);
 
+router.get('/users', userControllers.getAllPatient);
+
 module.exports = router;
