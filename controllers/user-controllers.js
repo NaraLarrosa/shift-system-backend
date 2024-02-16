@@ -117,7 +117,7 @@ const passwordRecovery = async (req, res, next) => {
       },
     });
 
-    const resetLink = `http://localhost:5000/reset-password/${resetToken}`;
+    const resetLink = `http://localhost:5000/api/user/reset-password/${resetToken}`;
     const mailOptions = {
       from: process.env.USER_GMAIL,
       to: user.email,
